@@ -1,5 +1,6 @@
 package co.develhope.esercizioNativeQuery.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class Prodotto {
     @Column(name = "quantita_disponibile")
     private Integer quantitaDisponibile;
     @Column(name = "data_creazione")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataCreazione;
 
     public Prodotto(){}
