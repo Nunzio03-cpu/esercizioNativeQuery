@@ -54,4 +54,16 @@ public class ProdottoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     *  Endpoint: DELETE /elimina-prodotto
+     *  Descrizione: Elimina l'oggetto inserito
+     *  @param prodotto
+     *  @return l'oggetto eliminato
+     */
+    @DeleteMapping("/elimina-prodotto")
+    public ResponseEntity<Prodotto> eliminaProdotto(@RequestBody Prodotto prodotto){
+        prodottoService.eliminaProdotto(prodotto);
+        return ResponseEntity.ok(prodotto);
+    }
 }

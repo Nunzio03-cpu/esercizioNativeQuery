@@ -38,4 +38,9 @@ public class ProdottoService {
             return Optional.empty();
         }
     }
+
+    public Prodotto eliminaProdotto(Prodotto prodotto){
+        prodottoRepository.delete(prodotto);
+        return prodotto;
+    }
 }
