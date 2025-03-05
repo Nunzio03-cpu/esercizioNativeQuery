@@ -63,7 +63,7 @@ public class ProdottoService {
         return prodotti;
     }
 
-    public List<Prodotto> ordinaPerPrezzoDisc(Double prezzo){
+    public List<Prodotto> ordinaPerPrezzo(Double prezzo){
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoOrderByPrezzoDesc(prezzo);
         return prodotti;
     }

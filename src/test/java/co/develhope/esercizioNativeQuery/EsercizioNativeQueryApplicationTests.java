@@ -40,6 +40,7 @@ import java.util.Optional;
 @AutoConfigureMockMvc
 class EsercizioNativeQueryApplicationTests {
     public static final String IDNOTFOUND = "999";
+    public static final Double PREZZOMINIMO = 1000.0;
     @Autowired
     private ProdottoController prodottoController;
     @Autowired
@@ -177,4 +178,27 @@ class EsercizioNativeQueryApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0]nome").value(Matchers.equalToIgnoringWhiteSpace("Test Prodotto")));
     }
+
+    @Test
+    public void testOrdinaPerPrezzo() throws Exception {
+        when(prodottoService.ordinaPerPrezzo(100.0)).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/ordina-per-prezzo-discendente")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto))
+                        .param("prezzo", "100.0"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testOrdinaPerPrezzoMinimo() throws Exception {
+        when(prodottoService.ordinaPerPrezzoMinore(PREZZOMINIMO)).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/ordina-per-prezzo-minore")
+                        .param("prezzo", String.valueOf(PREZZOMINIMO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]prezzo").value(Matchers.lessThan(PREZZOMINIMO)));
+    }
+
+
 }

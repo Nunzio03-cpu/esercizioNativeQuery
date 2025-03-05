@@ -97,8 +97,8 @@ public class ProdottoController {
     }
 
     @GetMapping("/ordina-per-prezzo-discendente")
-    public ResponseEntity<List<Prodotto>> ordinaPerPrezzoDisc(@RequestParam Double prezzo){
-        List<Prodotto> prodotti = prodottoService.ordinaPerPrezzoDisc(prezzo);
+    public ResponseEntity<List<Prodotto>> ordinaPerPrezzo(@RequestParam Double prezzo){
+        List<Prodotto> prodotti = prodottoService.ordinaPerPrezzo(prezzo);
         return ResponseEntity.ok(prodotti);
     }
 
