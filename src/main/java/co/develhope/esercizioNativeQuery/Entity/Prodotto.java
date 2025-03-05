@@ -24,18 +24,17 @@ public class Prodotto {
     private Integer quantitaDisponibile;
     @Column(name = "data_creazione")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dataCreazione;
+    private LocalDate dataCreazione = LocalDate.now();
 
     public Prodotto(){}
 
-    public Prodotto(Long id, String nome, String descrizione, Double prezzo, CategoriaEnum categoria, Integer quantitaDisponibile, LocalDate dataCreazione) {
+    public Prodotto(Long id, String nome, String descrizione, Double prezzo, CategoriaEnum categoria, Integer quantitaDisponibile) {
         this.id = id;
         this.nome = nome;
         this.descrizione = descrizione;
         this.prezzo = prezzo;
         this.categoria = categoria;
         this.quantitaDisponibile = quantitaDisponibile;
-        this.dataCreazione = dataCreazione;
     }
 
     public Long getId() {

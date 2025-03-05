@@ -1,11 +1,11 @@
 package co.develhope.esercizioNativeQuery.Service;
 
+import co.develhope.esercizioNativeQuery.Entity.CategoriaEnum;
 import co.develhope.esercizioNativeQuery.Entity.Prodotto;
 import co.develhope.esercizioNativeQuery.Repository.ProdottoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +18,9 @@ public class ProdottoService {
         return prodottoRepository.save(prodotto);
     }
 
-    public ArrayList<Prodotto> selezionaOgniProdotto(){
+    public List<Prodotto> selezionaOgniProdotto(){
         List<Prodotto> prodotti = prodottoRepository.findAll();
-        return new ArrayList<>(prodotti);
+        return prodotti;
     }
 
     public Optional<Prodotto> aggiornaProdotto(Long id, Prodotto prodottoAggiornato){
@@ -42,5 +42,34 @@ public class ProdottoService {
     public Prodotto eliminaProdotto(Prodotto prodotto){
         prodottoRepository.delete(prodotto);
         return prodotto;
+    }
+
+    public List<Prodotto> cercaPerCategoria(CategoriaEnum categoria){
+        List<Prodotto> prodotti = prodottoRepository.findByCategoria(categoria);
+        return prodotti;
+    }
+
+    public Optional<Prodotto> cercaPerId(Long id){
+        Optional<Prodotto> prodottoOptional = prodottoRepository.findById(id);
+        if (prodottoOptional.isPresent()){
+            return prodottoOptional;
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public List<Prodotto> cercaPerParolaChiave(String nome){
+        List<Prodotto> prodotti = prodottoRepository.findByNomeContaining(nome);
+        return prodotti;
+    }
+
+    public List<Prodotto> ordinaPerPrezzoDisc(Double prezzo){
+        List<Prodotto> prodotti = prodottoRepository.findByPrezzoOrderByPrezzoDesc(prezzo);
+        return prodotti;
+    }
+
+    public List<Prodotto> ordinaPerPrezzoMinore(Double prezzo){
+        List<Prodotto> prodotti = prodottoRepository.findByPrezzoLessThan(prezzo);
+        return prodotti;
     }
 }

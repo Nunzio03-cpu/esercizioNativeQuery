@@ -6,11 +6,14 @@ public enum CategoriaEnum {
     ELETTRODOMESTICO ("elettrodomestico");
 
 
-    String descrizione;
+    private final String descrizione;
 
     CategoriaEnum (String descrizione){
         this.descrizione = descrizione;
     }
 
+    public String getDescrizione() {
+        return descrizione;
+    }
 }
 
