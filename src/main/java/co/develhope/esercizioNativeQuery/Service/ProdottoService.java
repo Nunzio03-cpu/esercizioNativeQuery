@@ -72,4 +72,9 @@ public class ProdottoService {
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoLessThan(prezzo);
         return prodotti;
     }
+
+    public List<Prodotto> cercaTuttiAttivi() {
+        List<Prodotto> prodotti = prodottoRepository.findByStatusTrue();
+        return prodotti;
+    }
 }

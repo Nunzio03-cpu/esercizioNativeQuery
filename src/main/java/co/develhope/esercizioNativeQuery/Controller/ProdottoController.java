@@ -107,4 +107,10 @@ public class ProdottoController {
         List<Prodotto> prodotti = prodottoService.ordinaPerPrezzoMinore(prezzo);
         return ResponseEntity.ok(prodotti);
     }
+
+    @GetMapping("/cerca-tutti-attivi")
+    public ResponseEntity<List<Prodotto>> cercaTuttiAttivi(){
+        List<Prodotto> prodotti = prodottoService.cercaTuttiAttivi();
+        return ResponseEntity.ok(prodotti);
+    }
 }

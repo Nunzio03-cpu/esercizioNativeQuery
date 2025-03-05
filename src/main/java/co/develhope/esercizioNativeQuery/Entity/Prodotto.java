@@ -25,6 +25,8 @@ public class Prodotto {
     @Column(name = "data_creazione")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataCreazione = LocalDate.now();
+    @Column(name = "status")
+    private boolean status = true;
 
     public Prodotto(){}
 
@@ -91,5 +93,13 @@ public class Prodotto {
 
     public void setDataCreazione(LocalDate dataCreazione) {
         this.dataCreazione = dataCreazione;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

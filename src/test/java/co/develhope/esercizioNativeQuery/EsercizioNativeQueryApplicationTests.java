@@ -200,5 +200,14 @@ class EsercizioNativeQueryApplicationTests {
                 .andExpect(jsonPath("$.[0]prezzo").value(Matchers.lessThan(PREZZOMINIMO)));
     }
 
-
+    @Test
+    public void testCercaTuttiAttivi() throws Exception {
+        when(prodottoService.cercaTuttiAttivi()).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-tutti-attivi")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+    }
 }
