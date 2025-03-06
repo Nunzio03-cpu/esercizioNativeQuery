@@ -9,5 +9,4 @@ public class EsercizioNativeQueryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EsercizioNativeQueryApplication.class, args);
 	}
-
 }

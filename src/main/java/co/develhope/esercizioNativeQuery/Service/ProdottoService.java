@@ -15,7 +15,8 @@ public class ProdottoService {
     private ProdottoRepository prodottoRepository;
 
     public Prodotto creaProdotto(Prodotto prodotto){
-        return prodottoRepository.save(prodotto);
+        Prodotto prodotto1 = prodottoRepository.save(prodotto);
+        return prodotto1;
     }
 
     public List<Prodotto> selezionaOgniProdotto(){
@@ -77,4 +78,10 @@ public class ProdottoService {
         List<Prodotto> prodotti = prodottoRepository.findByStatusTrue();
         return prodotti;
     }
+
+    public List<Prodotto> selezionaPerCategoriaAbito(CategoriaEnum categoria){
+        List<Prodotto> prodotti = prodottoRepository.countByCategoriaAbito(categoria);
+        return prodotti;
+    }
+
 }

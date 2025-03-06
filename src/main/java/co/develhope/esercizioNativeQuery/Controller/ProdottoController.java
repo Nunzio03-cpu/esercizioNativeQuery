@@ -113,4 +113,11 @@ public class ProdottoController {
         List<Prodotto> prodotti = prodottoService.cercaTuttiAttivi();
         return ResponseEntity.ok(prodotti);
     }
+
+    @GetMapping("/seleziona-per-categoria-abito")
+    public ResponseEntity<List<Prodotto>> selezionaPerCategoriaAbito(@RequestParam CategoriaEnum categoria){
+        List<Prodotto> prodotti = prodottoService.selezionaPerCategoriaAbito(categoria);
+        return ResponseEntity.ok(prodotti);
+    }
+
 }
