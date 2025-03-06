@@ -79,9 +79,9 @@ public class ProdottoService {
         return prodotti;
     }
 
-    public List<Prodotto> selezionaPerCategoriaAbito(CategoriaEnum categoria){
-        List<Prodotto> prodotti = prodottoRepository.countByCategoriaAbito(categoria);
-        return prodotti;
+    public Long selezionaPerCategoriaAbito(CategoriaEnum categoria){
+        Long numeroProdotto = prodottoRepository.countByCategoriaAbito(categoria);
+        return numeroProdotto;
     }
 
 }

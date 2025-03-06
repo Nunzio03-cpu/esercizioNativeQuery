@@ -115,9 +115,8 @@ public class ProdottoController {
     }
 
     @GetMapping("/seleziona-per-categoria-abito")
-    public ResponseEntity<List<Prodotto>> selezionaPerCategoriaAbito(@RequestParam CategoriaEnum categoria){
-        List<Prodotto> prodotti = prodottoService.selezionaPerCategoriaAbito(categoria);
-        return ResponseEntity.ok(prodotti);
+    public ResponseEntity<Long> selezionaPerCategoriaAbito(@RequestParam CategoriaEnum categoria){
+        Long numeroProdotto = prodottoService.selezionaPerCategoriaAbito(categoria);
+        return ResponseEntity.ok(numeroProdotto);
     }
-
 }

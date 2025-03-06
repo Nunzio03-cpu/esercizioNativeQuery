@@ -14,9 +14,9 @@ public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
     List<Prodotto> findByPrezzoOrderByPrezzoDesc(Double prezzo);
     List<Prodotto> findByPrezzoLessThan(Double prezzo);
     List<Prodotto> findByStatusTrue();
-   @Query(value = "select categoria, count (*) as contatore from prodotto where categoria = ?1",
+   @Query(value = "select count(*) from native.prodotto p where p.categoria = ?1",
                     nativeQuery = true)
-    List<Prodotto> countByCategoriaAbito(CategoriaEnum categoria);
+    Long countByCategoriaAbito(CategoriaEnum categoria);
     //@Query(value = "SELECT * FROM book b WHERE b.status = ?1",
     //        nativeQuery = true)
     //List<BookEntity> findByStatus(BookStatus status);
