@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -180,8 +181,8 @@ class EsercizioNativeQueryApplicationTests {
     }
 
     @Test
-    public void testOrdinaPerPrezzo() throws Exception {
-        when(prodottoService.ordinaPerPrezzo(100.0)).thenReturn(Collections.singletonList(prodotto));
+    public void testCercaPerPrezzo() throws Exception {
+        when(prodottoService.cercaPerPrezzo(100.0)).thenReturn(Collections.singletonList(prodotto));
         mockMvc.perform(get("/prodotto/ordina-per-prezzo-discendente")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto))
@@ -191,8 +192,8 @@ class EsercizioNativeQueryApplicationTests {
     }
 
     @Test
-    public void testOrdinaPerPrezzoMinimo() throws Exception {
-        when(prodottoService.ordinaPerPrezzoMinore(PREZZOMINIMO)).thenReturn(Collections.singletonList(prodotto));
+    public void testOrdinaPerPrezzoMinimoDi() throws Exception {
+        when(prodottoService.ordinaPerPrezzoMinoreDi(PREZZOMINIMO)).thenReturn(Collections.singletonList(prodotto));
         mockMvc.perform(get("/prodotto/ordina-per-prezzo-minore")
                         .param("prezzo", String.valueOf(PREZZOMINIMO)))
                 .andDo(print())
@@ -204,6 +205,42 @@ class EsercizioNativeQueryApplicationTests {
     public void testCercaTuttiAttivi() throws Exception {
         when(prodottoService.cercaTuttiAttivi()).thenReturn(Collections.singletonList(prodotto));
         mockMvc.perform(get("/prodotto/cerca-tutti-attivi")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+    }
+
+    @Test
+    public void testContaPerCategoria() throws Exception {
+        CategoriaEnum categoria = CategoriaEnum.ABITO;
+        Long longAtteso = 3L;
+        when(prodottoService.contaPerCategoria(categoria)).thenReturn(longAtteso);
+        mockMvc.perform(get("/prodotto/conta-per-categoria")
+                        //casta la categoria a string
+                        .param("categoria", categoria.name()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                //ritorna il long castato a string
+                .andExpect(MockMvcResultMatchers.content().string(longAtteso.toString()));
+    }
+
+    @Test
+    public void testCercaCinqueProdottiPiuDisponibili() throws Exception {
+        when(prodottoService.cercaCinqueProdottiPiuDisponibili()).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-cinque-prodotti-piu-disponibili")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+    }
+
+    @Test
+    public void testCercaProdottiPiuRecenti() throws Exception {
+        when(prodottoService.cercaProdottiPiuRecenti()).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-prodotti-piu-recenti")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())

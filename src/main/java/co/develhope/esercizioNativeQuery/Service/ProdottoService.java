@@ -64,12 +64,12 @@ public class ProdottoService {
         return prodotti;
     }
 
-    public List<Prodotto> ordinaPerPrezzo(Double prezzo){
+    public List<Prodotto> cercaPerPrezzo(Double prezzo){
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoOrderByPrezzoDesc(prezzo);
         return prodotti;
     }
 
-    public List<Prodotto> ordinaPerPrezzoMinore(Double prezzo){
+    public List<Prodotto> ordinaPerPrezzoMinoreDi(Double prezzo){
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoLessThan(prezzo);
         return prodotti;
     }
@@ -79,9 +79,19 @@ public class ProdottoService {
         return prodotti;
     }
 
-    public Long selezionaPerCategoriaAbito(CategoriaEnum categoria){
-        Long numeroProdotto = prodottoRepository.countByCategoriaAbito(categoria);
+    public Long contaPerCategoria(CategoriaEnum categoria){
+        Long numeroProdotto = prodottoRepository.countByCategoria(categoria);
         return numeroProdotto;
+    }
+
+    public List<Prodotto> cercaCinqueProdottiPiuDisponibili(){
+        List<Prodotto> prodotti = prodottoRepository.findTopFiveMostAvailableProdotto();
+        return prodotti;
+    }
+
+    public List<Prodotto> cercaProdottiPiuRecenti(){
+        List<Prodotto> prodotti = prodottoRepository.findRecentlyProdotto();
+        return prodotti;
     }
 
 }
