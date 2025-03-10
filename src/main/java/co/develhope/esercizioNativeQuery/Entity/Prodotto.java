@@ -8,23 +8,31 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "prodotto")
 public class Prodotto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nome")
     private String nome;
+
     @Column(name = "descrizione")
     private String descrizione;
+
     @Column(name = "prezzo")
     private Double prezzo;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria")
     private CategoriaEnum categoria;
+
     @Column(name = "quantita_disponibile")
     private Integer quantitaDisponibile;
+
     @Column(name = "data_creazione")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataCreazione = LocalDate.now();
+
     @Column(name = "status")
     private boolean status = true;
 

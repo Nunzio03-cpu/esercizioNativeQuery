@@ -58,6 +58,7 @@ class EsercizioNativeQueryApplicationTests {
         prodotto = new Prodotto();
         prodotto.setId(3L);
         prodotto.setNome("Test Prodotto");
+        prodotto.setDescrizione("Descrizione");
         prodotto.setCategoria(CategoriaEnum.ELETTRODOMESTICO);
         prodotto.setPrezzo(100.0);
 
@@ -82,7 +83,7 @@ class EsercizioNativeQueryApplicationTests {
                 // al json dell'oggetto che abbiamo creato
                 .andDo(print())
                 .andExpect(status().isOk())// controlliamo che il codice status sia ok
-                .andExpect(jsonPath("$.nome").value("Test Prodotto")); // controllo opzionale
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome())); // controllo opzionale
 
     }
 
@@ -104,7 +105,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -128,7 +129,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -139,7 +140,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -161,7 +162,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -172,13 +173,13 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]nome").value(Matchers.equalToIgnoringWhiteSpace("Test Prodotto")));
+                .andExpect(jsonPath("$.[0]nome").value(Matchers.equalToIgnoringWhiteSpace(prodotto.getNome())));
     }
 
     @Test
     public void testCercaPerPrezzo() throws Exception {
         when(prodottoService.cercaPerPrezzo(100.0)).thenReturn(Collections.singletonList(prodotto));
-        mockMvc.perform(get("/prodotto/ordina-per-prezzo-discendente")
+        mockMvc.perform(get("/prodotto/cerca-per-prezzo")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto))
                         .param("prezzo", "100.0"))
@@ -187,9 +188,9 @@ class EsercizioNativeQueryApplicationTests {
     }
 
     @Test
-    public void testOrdinaPerPrezzoMinimoDi() throws Exception {
+    public void testOrdinaPerPrezzoMinoreDi() throws Exception {
         when(prodottoService.ordinaPerPrezzoMinoreDi(PREZZOMINIMO)).thenReturn(Collections.singletonList(prodotto));
-        mockMvc.perform(get("/prodotto/ordina-per-prezzo-minore")
+        mockMvc.perform(get("/prodotto/ordina-per-prezzo-minore-di")
                         .param("prezzo", String.valueOf(PREZZOMINIMO)))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -204,7 +205,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -229,7 +230,7 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
     }
 
     @Test
@@ -240,6 +241,30 @@ class EsercizioNativeQueryApplicationTests {
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]nome").value("Test Prodotto"));
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
+    }
+
+    @Test
+    public void testCercaParolaChiaveNomeODescrizione() throws Exception {
+        when(prodottoService.cercaParolaChiaveNomeODescrizione(prodotto.getNome(), prodotto.getDescrizione()))
+                .thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-parola-chiave-nome-o-descrizione")
+                        .param("nome", prodotto.getNome())
+                        .param("descrizione", prodotto.getDescrizione()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nome").value(prodotto.getNome()))
+                .andExpect(jsonPath("$[0].descrizione").value(prodotto.getDescrizione()));
+    }
+
+    @Test
+    public void testPrezzoMedioPerCategoria() throws Exception {
+        CategoriaEnum categoria = CategoriaEnum.UTENSILE;
+        Double prezzoMedio = 100.0;
+        when(prodottoService.prezzoMedioPerCategoria(categoria.name())).thenReturn(prezzoMedio);
+        mockMvc.perform(get("/prodotto/prezzo-medio-per-categoria/{categoria}", categoria.name()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(prezzoMedio)));
     }
 }

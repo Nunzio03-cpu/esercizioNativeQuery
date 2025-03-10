@@ -94,4 +94,13 @@ public class ProdottoService {
         return prodotti;
     }
 
+    public List<Prodotto> cercaParolaChiaveNomeODescrizione(String nome, String descrizione){
+        List<Prodotto> prodotti = prodottoRepository.findByNomeOrDescrizioneContaining(nome, descrizione);
+        return prodotti;
+    }
+
+    public Double prezzoMedioPerCategoria(String categoria){
+        Double prezzoMedio = prodottoRepository.avgPrezzoByCategoria(categoria);
+        return prezzoMedio;
+    }
 }

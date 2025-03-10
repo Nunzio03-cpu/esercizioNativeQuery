@@ -188,4 +188,17 @@ public class ProdottoController {
         List<Prodotto> prodotti = prodottoService.cercaProdottiPiuRecenti();
         return ResponseEntity.ok(prodotti);
     }
+
+    @GetMapping("/cerca-parola-chiave-nome-o-descrizione")
+    public ResponseEntity<List<Prodotto>> cercaParolaChiaveNomeODescrizione(@RequestParam String nome,
+                                                                            @RequestParam String descrizione) {
+        List<Prodotto> prodotti = prodottoService.cercaParolaChiaveNomeODescrizione(nome, descrizione);
+        return ResponseEntity.ok(prodotti);
+    }
+
+    @GetMapping("/prezzo-medio-per-categoria/{categoria}")
+    public ResponseEntity<Double> prezzoMedioPerCategoria(@PathVariable CategoriaEnum categoria){
+        Double prezzoMedio = prodottoService.prezzoMedioPerCategoria(categoria.name());
+        return ResponseEntity.ok(prezzoMedio);
+    }
 }
