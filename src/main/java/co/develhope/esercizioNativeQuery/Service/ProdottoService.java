@@ -14,19 +14,19 @@ public class ProdottoService {
     @Autowired
     private ProdottoRepository prodottoRepository;
 
-    public Prodotto creaProdotto(Prodotto prodotto){
+    public Prodotto creaProdotto(Prodotto prodotto) {
         Prodotto prodotto1 = prodottoRepository.save(prodotto);
         return prodotto1;
     }
 
-    public List<Prodotto> selezionaOgniProdotto(){
+    public List<Prodotto> selezionaOgniProdotto() {
         List<Prodotto> prodotti = prodottoRepository.findAll();
         return prodotti;
     }
 
-    public Optional<Prodotto> aggiornaProdotto(Long id, Prodotto prodottoAggiornato){
+    public Optional<Prodotto> aggiornaProdotto(Long id, Prodotto prodottoAggiornato) {
         Optional<Prodotto> prodottoOptional = prodottoRepository.findById(id);
-        if (prodottoOptional.isPresent()){
+        if (prodottoOptional.isPresent()) {
             prodottoOptional.get().setNome(prodottoAggiornato.getNome());
             prodottoOptional.get().setDescrizione(prodottoAggiornato.getDescrizione());
             prodottoOptional.get().setPrezzo(prodottoAggiornato.getPrezzo());
@@ -40,36 +40,36 @@ public class ProdottoService {
         }
     }
 
-    public Prodotto eliminaProdotto(Prodotto prodotto){
+    public Prodotto eliminaProdotto(Prodotto prodotto) {
         prodottoRepository.delete(prodotto);
         return prodotto;
     }
 
-    public List<Prodotto> cercaPerCategoria(CategoriaEnum categoria){
+    public List<Prodotto> cercaPerCategoria(CategoriaEnum categoria) {
         List<Prodotto> prodotti = prodottoRepository.findByCategoria(categoria);
         return prodotti;
     }
 
-    public Optional<Prodotto> cercaPerId(Long id){
+    public Optional<Prodotto> cercaPerId(Long id) {
         Optional<Prodotto> prodottoOptional = prodottoRepository.findById(id);
-        if (prodottoOptional.isPresent()){
+        if (prodottoOptional.isPresent()) {
             return prodottoOptional;
         } else {
             return Optional.empty();
         }
     }
 
-    public List<Prodotto> cercaPerParolaChiave(String nome){
+    public List<Prodotto> cercaPerParolaChiave(String nome) {
         List<Prodotto> prodotti = prodottoRepository.findByNomeContaining(nome);
         return prodotti;
     }
 
-    public List<Prodotto> cercaPerPrezzo(Double prezzo){
+    public List<Prodotto> cercaPerPrezzo(Double prezzo) {
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoOrderByPrezzoDesc(prezzo);
         return prodotti;
     }
 
-    public List<Prodotto> ordinaPerPrezzoMinoreDi(Double prezzo){
+    public List<Prodotto> ordinaPerPrezzoMinoreDi(Double prezzo) {
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoLessThan(prezzo);
         return prodotti;
     }
@@ -79,28 +79,52 @@ public class ProdottoService {
         return prodotti;
     }
 
-    public Long contaPerCategoria(CategoriaEnum categoria){
+    public Long contaPerCategoria(CategoriaEnum categoria) {
         Long numeroProdotto = prodottoRepository.countByCategoria(categoria);
         return numeroProdotto;
     }
 
-    public List<Prodotto> cercaCinqueProdottiPiuDisponibili(){
+    public List<Prodotto> cercaCinqueProdottiPiuDisponibili() {
         List<Prodotto> prodotti = prodottoRepository.findTopFiveMostAvailableProdotto();
         return prodotti;
     }
 
-    public List<Prodotto> cercaProdottiPiuRecenti(){
+    public List<Prodotto> cercaProdottiPiuRecenti() {
         List<Prodotto> prodotti = prodottoRepository.findRecentlyProdotto();
         return prodotti;
     }
 
-    public List<Prodotto> cercaParolaChiaveNomeODescrizione(String nome, String descrizione){
+    public List<Prodotto> cercaParolaChiaveNomeODescrizione(String nome, String descrizione) {
         List<Prodotto> prodotti = prodottoRepository.findByNomeOrDescrizioneContaining(nome, descrizione);
         return prodotti;
     }
 
-    public Double prezzoMedioPerCategoria(String categoria){
+    public Double prezzoMedioPerCategoria(String categoria) {
         Double prezzoMedio = prodottoRepository.avgPrezzoByCategoria(categoria);
         return prezzoMedio;
+    }
+
+    public Optional<Prodotto> cancellazioneLogica(Long id) {
+        Optional<Prodotto> prodottoOptional = prodottoRepository.findById(id);
+        if (prodottoOptional.isPresent()) {
+            prodottoOptional.get().setStatus(false);
+            Prodotto prodotto = prodottoOptional.get();
+            prodottoRepository.save(prodotto);
+            return Optional.of(prodotto);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Prodotto> attivaStatus(Long id) {
+        Optional<Prodotto> prodottoOptional = prodottoRepository.findById(id);
+        if (prodottoOptional.isPresent()) {
+            prodottoOptional.get().setStatus(true);
+            Prodotto prodotto = prodottoOptional.get();
+            prodottoRepository.save(prodotto);
+            return Optional.of(prodotto);
+        } else {
+            return Optional.empty();
+        }
     }
 }

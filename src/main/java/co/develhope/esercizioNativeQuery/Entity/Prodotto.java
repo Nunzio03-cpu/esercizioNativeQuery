@@ -36,7 +36,8 @@ public class Prodotto {
     @Column(name = "status")
     private boolean status = true;
 
-    public Prodotto(){}
+    public Prodotto() {
+    }
 
     public Prodotto(Long id, String nome, String descrizione, Double prezzo, CategoriaEnum categoria, Integer quantitaDisponibile) {
         this.id = id;

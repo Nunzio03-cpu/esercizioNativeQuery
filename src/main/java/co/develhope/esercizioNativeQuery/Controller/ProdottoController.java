@@ -189,6 +189,15 @@ public class ProdottoController {
         return ResponseEntity.ok(prodotti);
     }
 
+    /**
+     * Endpoint: GET /cerca-parola-chiave-nome-o-descrizione
+     * Descrizione: cerca il prodotto tramite una parola chiave che può
+     * essere contenuta o nel nome o nella descrizione;
+     *
+     * @param nome
+     * @param descrizione
+     * @return
+     */
     @GetMapping("/cerca-parola-chiave-nome-o-descrizione")
     public ResponseEntity<List<Prodotto>> cercaParolaChiaveNomeODescrizione(@RequestParam String nome,
                                                                             @RequestParam String descrizione) {
@@ -196,9 +205,50 @@ public class ProdottoController {
         return ResponseEntity.ok(prodotti);
     }
 
+    /**
+     * Endpoint: GET /prezzo-medio-per-categoria/{categoria}
+     * Descrizione: trova il prezzo medio dei prodotti di una categoria
+     *
+     * @param categoria
+     * @return il prezzo medio dei prodotti appartenenti alla categoria cercata
+     */
     @GetMapping("/prezzo-medio-per-categoria/{categoria}")
-    public ResponseEntity<Double> prezzoMedioPerCategoria(@PathVariable CategoriaEnum categoria){
+    public ResponseEntity<Double> prezzoMedioPerCategoria(@PathVariable CategoriaEnum categoria) {
         Double prezzoMedio = prodottoService.prezzoMedioPerCategoria(categoria.name());
         return ResponseEntity.ok(prezzoMedio);
+    }
+
+    /**
+     * Endpoint: PUT /cancellazione-logica/{id}
+     * Descrizione: metodo che elimina logicamente un prodotto traminte la setStatus(false)
+     *
+     * @param id
+     * @return prodotto con il proprio campo status = false
+     */
+    @PutMapping("/cancellazione-logica/{id}")
+    public ResponseEntity<Optional<Prodotto>> cancellazioneLogica(@PathVariable Long id) {
+        Optional<Prodotto> prodottoOptional = prodottoService.cancellazioneLogica(id);
+        if (prodottoOptional.isPresent()) {
+            return ResponseEntity.ok(prodottoOptional);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Endpoint: PUT /attiva-status/{id}
+     * Descrizione: metodo che riattiva il prodotto negli oggetti attivi
+     *
+     * @param id
+     * @return prodotto con il proprio campo status = true
+     */
+    @PutMapping("/attiva-status/{id}")
+    public ResponseEntity<Optional<Prodotto>> attivaStatus(@PathVariable Long id) {
+        Optional<Prodotto> prodottoOptional = prodottoService.attivaStatus(id);
+        if (prodottoOptional.isPresent()) {
+            return ResponseEntity.ok(prodottoOptional);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

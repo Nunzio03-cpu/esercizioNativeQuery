@@ -37,8 +37,4 @@ public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
 
     @Query(value = "select avg(prezzo) from prodotto where categoria = ?1", nativeQuery = true)
     Double avgPrezzoByCategoria(@Param("categoria") String categoria);
-    // @Query(value = "SELECT * FROM Users u WHERE u.status = :status and u.name = :name",
-    //  nativeQuery = true)
-    //User findUserByStatusAndNameNamedParamsNative(
-    //  @Param("status") Integer status, @Param("name") String name);
 }

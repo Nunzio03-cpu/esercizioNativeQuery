@@ -100,7 +100,7 @@ class EsercizioNativeQueryApplicationTests {
     public void testAggiornaProdottoOk() throws Exception {
         when(prodottoService.aggiornaProdotto(anyLong(), any(Prodotto.class)))
                 .thenReturn(Optional.of(prodotto));
-        mockMvc.perform(put("/prodotto/aggiorna-prodotto/1")
+        mockMvc.perform(put("/prodotto/aggiorna-prodotto/" + prodotto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
@@ -135,7 +135,7 @@ class EsercizioNativeQueryApplicationTests {
     @Test
     public void testCercaPerIdOk() throws Exception {
         when(prodottoService.cercaPerId(anyLong())).thenReturn(Optional.of(prodotto));
-        mockMvc.perform(get("/prodotto/cerca-per-id/3")
+        mockMvc.perform(get("/prodotto/cerca-per-id/" + prodotto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
@@ -146,7 +146,7 @@ class EsercizioNativeQueryApplicationTests {
     @Test
     public void testCercaPerIdNotFound() throws Exception {
         when(prodottoService.cercaPerId(anyLong())).thenReturn(Optional.empty());
-        mockMvc.perform(get("/prodotto/cerca-per-id/3")
+        mockMvc.perform(get("/prodotto/cerca-per-id/" + prodotto.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
@@ -155,9 +155,8 @@ class EsercizioNativeQueryApplicationTests {
 
     @Test
     public void testCarcaPerCategoria() throws Exception {
-        CategoriaEnum categoria = CategoriaEnum.ABITO;
-        when(prodottoService.cercaPerCategoria(categoria)).thenReturn(Collections.singletonList(prodotto));
-        mockMvc.perform(get("/prodotto/cerca-per-categoria/ABITO")
+        when(prodottoService.cercaPerCategoria(prodotto.getCategoria())).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-per-categoria/" + prodotto.getCategoria())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
@@ -167,8 +166,8 @@ class EsercizioNativeQueryApplicationTests {
 
     @Test
     public void testCercaPerParolaChiave() throws Exception {
-        when(prodottoService.cercaPerParolaChiave("Test Prodotto")).thenReturn(Collections.singletonList(prodotto));
-        mockMvc.perform(get("/prodotto/cerca-per-parola-chiave/Test Prodotto")
+        when(prodottoService.cercaPerParolaChiave(prodotto.getNome())).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-per-parola-chiave/" + prodotto.getNome())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto)))
                 .andDo(print())
@@ -178,7 +177,7 @@ class EsercizioNativeQueryApplicationTests {
 
     @Test
     public void testCercaPerPrezzo() throws Exception {
-        when(prodottoService.cercaPerPrezzo(100.0)).thenReturn(Collections.singletonList(prodotto));
+        when(prodottoService.cercaPerPrezzo(prodotto.getPrezzo())).thenReturn(Collections.singletonList(prodotto));
         mockMvc.perform(get("/prodotto/cerca-per-prezzo")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(prodotto))
@@ -267,4 +266,47 @@ class EsercizioNativeQueryApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(content().string(String.valueOf(prezzoMedio)));
     }
+
+    @Test
+    public void testCancellazioneLogicaOk() throws Exception {
+        when(prodottoService.cancellazioneLogica(anyLong())).thenReturn(Optional.of(prodotto));
+        mockMvc.perform(put("/prodotto/cancellazione-logica/" + prodotto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome()));
+    }
+
+    @Test
+    public void testCancellazioneLogicaNotFound() throws Exception {
+        when(prodottoService.cancellazioneLogica(anyLong())).thenReturn(Optional.empty());
+        mockMvc.perform(put("/prodotto/attiva-status/" + prodotto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testAttivaStatusOk() throws Exception {
+        when(prodottoService.attivaStatus(anyLong())).thenReturn(Optional.of(prodotto));
+        mockMvc.perform(put("/prodotto/attiva-status/" + prodotto.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodotto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value(prodotto.getNome()));
+    }
+
+    @Test
+    public void testAttivaStatusNotFound() throws Exception {
+        when(prodottoService.attivaStatus(anyLong())).thenReturn(Optional.empty());
+        mockMvc.perform(put("/prodotto/attiva-status/" + prodottoNotFound.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(prodottoNotFound)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
 }
