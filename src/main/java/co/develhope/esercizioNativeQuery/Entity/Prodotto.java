@@ -36,6 +36,7 @@ public class Prodotto {
     @Column(name = "status")
     private boolean status = true;
 
+
     public Prodotto() {
     }
 

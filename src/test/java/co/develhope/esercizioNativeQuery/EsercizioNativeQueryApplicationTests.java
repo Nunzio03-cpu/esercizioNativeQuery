@@ -309,4 +309,27 @@ class EsercizioNativeQueryApplicationTests {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void testCercaUltimiDisponibili() throws Exception {
+        Integer quantitaDisponibile = anyInt();
+        when(prodottoService.cercaUltimiDisponibili(quantitaDisponibile)).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-ultimi-disponibili")
+                        .param("quantitaDisponibile", quantitaDisponibile.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
+    }
+
+    @Test
+    public void testCercaPerPrezzoTra() throws Exception {
+        Double prezzoMinimo = anyDouble();
+        Double prezzoMassimo = anyDouble();
+        when(prodottoService.cercaPerPrezzoTra(prezzoMinimo, prezzoMassimo)).thenReturn(Collections.singletonList(prodotto));
+        mockMvc.perform(get("/prodotto/cerca-per-prezzo-tra")
+                        .param("prezzoMinimo", prezzoMinimo.toString())
+                        .param("prezzoMassimo", prezzoMassimo.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]nome").value(prodotto.getNome()));
+    }
 }

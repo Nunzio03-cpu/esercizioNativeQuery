@@ -127,4 +127,14 @@ public class ProdottoService {
             return Optional.empty();
         }
     }
+
+    public List<Prodotto> cercaUltimiDisponibili(Integer quantitaDisponibile) {
+        List<Prodotto> prodotti = prodottoRepository.findByQuantitaDisponibileLessThan(quantitaDisponibile);
+        return prodotti;
+    }
+
+    public List<Prodotto> cercaPerPrezzoTra(Double prezzoMinimo, Double prezzoMassimo) {
+        List<Prodotto> prodotti = prodottoRepository.findByPrezzoBetween(prezzoMinimo, prezzoMassimo);
+        return prodotti;
+    }
 }

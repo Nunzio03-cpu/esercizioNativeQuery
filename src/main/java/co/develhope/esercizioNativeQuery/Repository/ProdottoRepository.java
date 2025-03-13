@@ -37,4 +37,8 @@ public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
 
     @Query(value = "select avg(prezzo) from prodotto where categoria = ?1", nativeQuery = true)
     Double avgPrezzoByCategoria(@Param("categoria") String categoria);
+
+    List<Prodotto> findByQuantitaDisponibileLessThan(Integer quantitaDisponibile);
+
+    List<Prodotto> findByPrezzoBetween(Double prezzoMinimo, Double prezzoMassimo);
 }

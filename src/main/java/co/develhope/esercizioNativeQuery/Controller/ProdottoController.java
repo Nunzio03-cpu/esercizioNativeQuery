@@ -3,6 +3,7 @@ package co.develhope.esercizioNativeQuery.Controller;
 import co.develhope.esercizioNativeQuery.Entity.CategoriaEnum;
 import co.develhope.esercizioNativeQuery.Entity.Prodotto;
 import co.develhope.esercizioNativeQuery.Service.ProdottoService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -250,5 +251,33 @@ public class ProdottoController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Endpoint: GET /cerca-ultimi-disponibili
+     * Descrizione: metodo che trova i prodotti più recenti inseriti nell'ultima settimana
+     *
+     * @param quantitaDisponibile
+     * @return lista dei prodotti inseriti nell'ultima settimana
+     */
+    @GetMapping("/cerca-ultimi-disponibili")
+    public ResponseEntity<List<Prodotto>> cercaUltimiDisponibili(@RequestParam Integer quantitaDisponibile) {
+        List<Prodotto> prodotti = prodottoService.cercaUltimiDisponibili(quantitaDisponibile);
+        return ResponseEntity.ok(prodotti);
+    }
+
+    /**
+     * Endpoint: GET /cerca-per-prezzo-tra
+     * Descrizione: metodo che cerca i prodotti che hanno un prezzo che rientra in dato intervallo
+     *
+     * @param prezzoMinimo
+     * @param prezzoMassimo
+     * @return lista dei prodotti che hanno un prezzo che rientra nell'intervallo dato
+     */
+    @GetMapping("/cerca-per-prezzo-tra")
+    public ResponseEntity<List<Prodotto>> cercaPerPrezzoTra(@RequestParam Double prezzoMinimo,
+                                                            @RequestParam Double prezzoMassimo) {
+        List<Prodotto> prodotti = prodottoService.cercaPerPrezzoTra(prezzoMinimo, prezzoMassimo);
+        return ResponseEntity.ok(prodotti);
     }
 }
