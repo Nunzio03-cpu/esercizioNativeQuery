@@ -41,4 +41,7 @@ public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
     List<Prodotto> findByQuantitaDisponibileLessThan(Integer quantitaDisponibile);
 
     List<Prodotto> findByPrezzoBetween(Double prezzoMinimo, Double prezzoMassimo);
+
+    //Prodotti di una categoria specifica ordinati per prezzo
+    List<Prodotto> findByCategoriaOrderByPrezzoDesc(CategoriaEnum categoria);
 }

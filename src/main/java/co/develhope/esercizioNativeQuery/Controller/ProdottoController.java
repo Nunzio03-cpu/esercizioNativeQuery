@@ -280,4 +280,18 @@ public class ProdottoController {
         List<Prodotto> prodotti = prodottoService.cercaPerPrezzoTra(prezzoMinimo, prezzoMassimo);
         return ResponseEntity.ok(prodotti);
     }
+
+    /**
+     * Endpoint: GET /cerca-per-categoria-ordinati-per-prezzo
+     * Descrizione: metodo che cerca per categoria i prodotti e poi li ordina per prezzo
+     * dal più al meno costoso
+     *
+     * @param categoria
+     * @return lista di prodotti appartenenti alla stessa categoria ordinati per prezzo in ordine decrescente
+     */
+    @GetMapping("/cerca-per-categoria-ordinati-per-prezzo")
+    public ResponseEntity<List<Prodotto>> cercaPerCategoriaOrdinatiPerPrezzo(@RequestParam CategoriaEnum categoria) {
+        List<Prodotto> prodotti = prodottoService.cercaPerCategoriaOrdinatiPerPrezzo(categoria);
+        return ResponseEntity.ok(prodotti);
+    }
 }

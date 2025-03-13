@@ -137,4 +137,9 @@ public class ProdottoService {
         List<Prodotto> prodotti = prodottoRepository.findByPrezzoBetween(prezzoMinimo, prezzoMassimo);
         return prodotti;
     }
+
+    public List<Prodotto> cercaPerCategoriaOrdinatiPerPrezzo(CategoriaEnum categoria) {
+        List<Prodotto> prodotti = prodottoRepository.findByCategoriaOrderByPrezzoDesc(categoria);
+        return prodotti;
+    }
 }
